@@ -44,3 +44,12 @@ output/
 /local-maven-repo
 
 test-output/
+
+#gradle files
+!gradle/wrapper/*jar
+.gradle/
+build/
+
+#other
+buildSessionId.txt
+sealights-config.properties

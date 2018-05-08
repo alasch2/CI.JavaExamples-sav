@@ -1,0 +1,56 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    // jcenter()
+}
+
+ext {
+    jmockitVersion = '1.29'
+    mockitoVersion = '1.10.19'
+    versions = [
+            junit:['4.11'],
+            testng:['6.9.4'],
+            logback:['1.2.3'],
+            slf4j: ['1.7.25'],
+            lombok:['1.16.16']
+    ]
+
+    libraries = [
+            jmockit: [
+                    "org.jmockit:jmockit:${jmockitVersion}"
+            ],
+
+            mockito: [
+                    "org.mockito:mockito-all:${mockitoVersion}"
+            ]
+    ]
+}
+
+if (project.hasProperty('trace_tests')) {
+    test {
+        beforeSuite { suite ->
+            println "Start suite: '$suite'"
+        }
+
+        afterSuite { suite, result ->
+            println "End suite: '$suite', result:'$result'"
+        }
+
+        beforeTest { testDescriptor ->
+            println ">>Start test: $testDescriptor'"
+
+        }
+        afterTest { testDescriptor, result ->
+            println "<<End test: '$testDescriptor', result:'$result'"
+        }
+    }
+}
+
+if (project.hasProperty('sl')) {
+    test {
+        doFirst { suite ->
+            println " ................. Using appName=$sealights.appName; testStage=$sealights.testStage ..........."
+        }
+    }
+}

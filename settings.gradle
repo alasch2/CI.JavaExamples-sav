@@ -1,0 +1,4 @@
+rootProject.name = 'javaexamples'
+include 'example-java8'
+include 'example-junit-only'
+include 'example-junit-testng'
