@@ -25,9 +25,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:2.0.0-SNAPSHOT'
-       //classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:2.0.45'
-        //classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:latest.release'
+        classpath "io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:${versions.sealights}"
     }
 }
 
@@ -41,7 +39,10 @@ if (project.apply_sealights_in_subproject) {
 
     sealights {
         appName = "GradleExampleJunitTestNG"
-        packagesIncluded = "edu.*, io.demo*"
     }
     println "Applied the subproject appName = $sealights.appName"
+}
+
+test {
+    useTestNG()
 }

@@ -1,7 +1,12 @@
 apply from: 'general-settings.gradle'
+apply from: 'versions.gradle'
+
 subprojects {
-    apply from: '../general-settings.gradle'
-    apply from: '../jacoco-cfg.gradle'
+    if (it.name != 'example_junit5') {
+        apply from: '../general-settings.gradle'
+        apply from: '../versions.gradle'
+        apply from: '../jacoco-cfg.gradle'
+    }
 }
 
 ext {
@@ -46,7 +51,7 @@ buildscript {
     dependencies {
         classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:2.0.0-SNAPSHOT'
         //classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:2.0.45'
-        //classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:latest.release'
+//        classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:latest.release'
     }
 }
 
@@ -71,11 +76,11 @@ subprojects {
             logToConsole = true
             // appName and packagesIncluded are overwritten by subprojects
             // when property -all' is NOT provided
-            appName = "GradleJavaExamples"
-            packagesIncluded = "edu.*, io.demo*, io.sl.maven.ex.*"
+            appName = "AllGradleJavaExamples"
+            packagesIncluded = "io.sl.ex.*"
 
             branch = "master"
-            build = System.getProperty('build')
+            build = System.getProperty('sl.build')
             createBuildSessionId = true
             filesExcluded = "*Test"
             // buildScannerIgnoreLogEnabled=true
@@ -86,6 +91,15 @@ subprojects {
         }
 
         println "Assigned the default appName = $sealights.appName"
+
+        if (!project.hasProperty('all')) {
+            project.afterEvaluate {
+                subprojects {
+                    it.sealights.appName = ext.appName
+                    it.sealights.packagesIncluded = ext.packagesIncluded
+                }
+            }
+        }
 
         test {
             sealights {

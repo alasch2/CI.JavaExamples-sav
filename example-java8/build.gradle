@@ -8,7 +8,9 @@ dependencies {
 /***************************************************************************************
  SEALIGHTS
  ***************************************************************************************/
-
+/**
+ * This section cannot be defines in general-setting file, only in the build script
+ */
 buildscript {
     repositories {
         mavenCentral()
@@ -23,9 +25,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:2.0.0-SNAPSHOT'
-       //classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:2.0.45'
-        //classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:latest.release'
+        classpath "io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:${versions.sealights}"
     }
 }
 
@@ -34,12 +34,11 @@ buildscript {
  * This is the default behavior when option 'all' is not provided
  * The default root project settings is overwritten to get particular results of the subproject
  */
-if (apply_sealights_in_subproject) {
+if (project.apply_sealights_in_subproject) {
     apply plugin: 'io.sealights.on-premise.agents.plugin.sealights-gradle-plugin'
 
     sealights {
         appName = "GradleExampleJava8"
-        packagesIncluded = "io.sl.maven.ex.*"
     }
     println "Applied the subproject appName = $sealights.appName"
 }

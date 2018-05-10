@@ -61,7 +61,7 @@
 					<artifactId>sealights-maven-plugin</artifactId>
 					<configuration>
 						<appName>MavenExampleJUnitTestNG</appName>
-						<packagesincluded>edu.*, io.demo*</packagesincluded>
+<!-- 						<packagesincluded>edu.*, io.demo*</packagesincluded> -->
 					</configuration>
 				</plugin>
 	        

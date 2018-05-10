@@ -1,0 +1,111 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        // jcenter()
+        maven {
+            credentials {
+                username "devops"
+                password "s2015l"
+            }
+            url "http://nex.sealights.co:8081/repository/sealights-internal"
+        }
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
+        classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:2.0.0-SNAPSHOT'
+        //classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:2.0.45'
+        //classpath 'io.sealights.on-premise.agents.plugin:sealights-gradle-plugin:latest.release'
+    }
+}
+
+//plugins {
+//    id 'com.gradle.build-scan' version '1.12.1'
+//}
+apply plugin: 'org.junit.platform.gradle.plugin'
+
+ext.junit4Version        = '4.12'
+ext.junitJupiterVersion  = '5.2.0'
+ext.junitVintageVersion  = '5.2.0'
+ext.junitPlatformVersion = '1.1.0'
+
+dependencies {
+    // JUnit Jupiter API and TestEngine implementation
+    testCompile "junit:junit:${junit4Version}"
+    testCompile "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+
+    testRuntime ("org.junit.vintage:junit-vintage-engine:${junitVintageVersion}") {
+        because 'allows JUnit 3 and JUnit 4 tests to run'
+    }
+
+    testRuntime ("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}") {
+        because 'allows tests to run from IDEs that bundle older version of launcher'
+    }
+}
+
+//buildScan {
+//    licenseAgreementUrl = "https://gradle.com/terms-of-service"
+//    licenseAgree = "yes"
+//}
+
+int javaVersion = Integer.valueOf((String) JavaVersion.current().getMajorVersion())
+if (javaVersion < 10) apply plugin: 'jacoco'
+
+jar {
+    baseName = 'gradle-ex-junit5'
+    version = '1.0.0-SNAPSHOT'
+}
+
+//junitPlatform {
+//
+//}
+//test {
+//    useJUnitPlatform()
+//}
+test {
+    useJUnitPlatform() {
+    // includeEngines 'junit-jupiter', 'junit-vintage'
+    // excludeEngines 'custom-engine'
+
+    // includeTags 'fast'
+        excludeTags 'slow'
+    }
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
+
+    reports {
+        html.enabled = true
+    }
+
+    if (javaVersion < 10) finalizedBy jacocoTestReport
+}
+
+
+/***************************************************************************************
+ SEALIGHTS
+ ***************************************************************************************/
+
+/**
+ * This is executed, if a single project should be built with SL
+ * This is the default behavior when option 'all' is not provided
+ * The default root project settings is overwritten to get particular results of the subproject
+ */
+if (project.apply_sealights_in_subproject) {
+    apply plugin: 'io.sealights.on-premise.agents.plugin.sealights-gradle-plugin'
+
+    sealights {
+        appName = "GradleExampleJunit5"
+        packagesIncluded = "com.example.project*"
+        sealightsJvmParams=["sl.junitVersion":"5"]
+    }
+    println "Applied the subproject appName = $sealights.appName"
+}
+
+
+task wrapper(type: Wrapper) {
+    description = 'Generates gradlew[.bat] scripts'
+    gradleVersion = '4.6'
+}
