@@ -59,14 +59,14 @@
 				</configuration>
 			</plugin>
 			
-				<plugin>
-					<groupId>io.sealights.on-premise.agents.plugin</groupId>
-					<artifactId>sealights-maven-plugin</artifactId>
-					<configuration>
-						<appName>MavenExampleJava8</appName>
+			<plugin>
+				<groupId>io.sealights.on-premise.agents.plugin</groupId>
+				<artifactId>sealights-maven-plugin</artifactId>
+				<configuration>
+					<appName>MavenExampleJava8</appName>
 <!-- 						<packagesincluded>io.sl.maven.ex.*</packagesincluded> -->
-					</configuration>
-				</plugin>
+				</configuration>
+			</plugin>
 				
 		</plugins>
 	</build>

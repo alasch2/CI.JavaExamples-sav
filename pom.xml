@@ -28,9 +28,9 @@
 		<!-- <maven.jar.plugin.version>2.4</maven.jar.plugin.version> -->
 		<maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
 <!--         <sealights.skip>true</sealights.skip> -->
-        <sealightsArgLine></sealightsArgLine>
         <sldebugOn>-agentlib:jdwp=transport=dt_socket,server=n,address=DESKTOP-FC1M245:5005,suspend=y</sldebugOn>
-        <sldebugOff></sldebugOff>
+<!--         <sealightsArgLine> </sealightsArgLine> -->
+        <sldebugOff> </sldebugOff>
         <sldebug>${sldebugOff}</sldebug>
         <!-- Set this for debugging of test listener-->
 <!--         <sldebug>${sldebugOn}</sldebug> -->
@@ -50,54 +50,6 @@
         </pluginRepository>
     </pluginRepositories>
 
-	<!-- <dependencyManagement> -->
-	<!-- <dependencies> -->
-
-	<!-- <dependency> -->
-	<!-- <groupId>org.projectlombok</groupId> -->
-	<!-- <artifactId>lombok</artifactId> -->
-	<!-- <version>${lombok.version}</version> -->
-	<!-- <scope>provided</scope> -->
-	<!-- </dependency> -->
-
-	<!-- <dependency> -->
-	<!-- <groupId>org.testng</groupId> -->
-	<!-- <artifactId>testng</artifactId> -->
-	<!-- <version>${testng.version}</version> -->
-	<!-- <scope>test</scope> -->
-	<!-- </dependency> -->
-
-	<!-- <dependency> -->
-	<!-- <groupId>junit</groupId> -->
-	<!-- <artifactId>junit</artifactId> -->
-	<!-- <version>${junit.version}</version> -->
-	<!-- <scope>test</scope> -->
-	<!-- </dependency> -->
-
-	<!-- <dependency> -->
-	<!-- <groupId>org.mockito</groupId> -->
-	<!-- <artifactId>mockito-all</artifactId> -->
-	<!-- <version>${mockito.version}</version> -->
-	<!-- <scope>provided</scope> -->
-	<!-- </dependency> -->
-
-	<!-- <dependency> -->
-	<!-- <groupId>org.powermock</groupId> -->
-	<!-- <artifactId>powermock-module-junit4</artifactId> -->
-	<!-- <version>${powermock.version}</version> -->
-	<!-- <scope>test</scope> -->
-	<!-- </dependency> -->
-
-	<!-- <dependency> -->
-	<!-- <groupId>org.powermock</groupId> -->
-	<!-- <artifactId>powermock-api-mockito</artifactId> -->
-	<!-- <version>${powermock.version}</version> -->
-	<!-- <scope>test</scope> -->
-	<!-- </dependency> -->
-
-	<!-- </dependencies> -->
-	<!-- </dependencyManagement> -->
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -109,11 +61,13 @@
 					<!-- <version>2.0.237</version> -->
 					<configuration>
 						<includeResources>true</includeResources>
-						<tokenFile>C:\SL\ENV\tokens\sl_token_ala.txt</tokenFile>
+						<!--Path to valid token should be set-->
+						<tokenFile>path/to/token</tokenFile>
+						<!--<tokenFile>C:\SL\ENV\tokens\sl_token_ala.txt</tokenFile>-->
 						<!-- <tokenFile>sl_ala1_token.txt</tokenFile> -->
 						<!-- <buildSessionId>b81b98f8ce739d3247e048c4cd777563</buildSessionId> -->
 						<!-- <buildSessionIdFile>buildSessionId.txt</buildSessionIdFile> -->
-<!-- 						<appName>AllMavenExamples</appName> -->
+ 						<!--<appName>AllMavenExamples</appName>-->
 						<build>${sl.build}</build>
 						<branch>master</branch>
 						<createBuildSessionId>true</createBuildSessionId>
@@ -126,7 +80,8 @@
 						<filesexcluded>*test-classes*</filesexcluded>
 						<logEnabled>true</logEnabled>
 						<logLevel>info</logLevel>
-						<!-- <logToFile>true</logToFile> -->
+						<logToConsole>true</logToConsole>
+						<logToFile>true</logToFile>
 						<testStage>Unit Tests</testStage>
 						<!-- <buildScannerIgnoreLogEnabled>true</buildScannerIgnoreLogEnabled> -->
 						<!-- <testListenerIgnoreLogEnabled>true</testListenerIgnoreLogEnabled> -->
@@ -135,8 +90,8 @@
 						<!--<proxy>127.0.0.1:8888</proxy> -->
 						<!--<server>http://54.154.181.128:8080/api</server> -->
 						<sendContributors>true</sendContributors>
-<!-- <testListenerJar>C:\Users\ala schneider\Dev\SL.OnPremise.Agents.Java\java-agent-bootstrapper\target\java-agent-bootstrapper-1.0.0-SNAPSHOT.jar</testListenerJar> -->
-<!-- <buildScannerJar>C:\Users\ala schneider\Dev\SL.OnPremise.Agents.Java\java-build-agent\target\java-build-agent-1.0.0-SNAPSHOT.jar</buildScannerJar> -->
+						<!--<testListenerJar>C:\Users\ala schneider\Dev\SL.OnPremise.Agents.Java\java-agent-bootstrapper\target\java-agent-bootstrapper-1.0.0-SNAPSHOT.jar</testListenerJar>-->
+						<!--<buildScannerJar>C:\Users\ala schneider\Dev\SL.OnPremise.Agents.Java\java-build-agent\target\java-build-agent-1.0.0-SNAPSHOT.jar</buildScannerJar>-->
 						<!-- <buildScannerJar>sl-build-scanner.jar</buildScannerJar> 
 						<testListenerJar>sl-test-listener.jar</testListenerJar> -->
 						<sealightsJvmParams>
@@ -178,8 +133,11 @@
 		            <groupId>org.apache.maven.plugins</groupId>
 		            <artifactId>maven-surefire-plugin</artifactId>
 		            <version>${maven.surefire.plugin.version}</version>
+		            <configuration>
+		            	<argLine>${powermock.agent.arg}</argLine>
+		            	<useSystemClassLoader>true</useSystemClassLoader>
+		            </configuration>
 	            </plugin>
-
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -232,10 +190,11 @@
 			            <groupId>org.apache.maven.plugins</groupId>
 			            <artifactId>maven-surefire-plugin</artifactId>
 			            <configuration>
-			            	<argLine>${sldebug} ${sealightsArgLine}</argLine>
+			            	<argLine>${sldebug} ${sealightsArgLine} ${powermock.agent.arg}</argLine>
+			            	<useSystemClassLoader>true</useSystemClassLoader>
 			            </configuration>
 			        </plugin>
-
+			        
 				</plugins>
 			</build>
 		</profile>

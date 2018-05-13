@@ -1,6 +1,11 @@
 
 dependencies {
     testCompile "junit:junit:${versions.junit}"
+    testCompile "org.mockito:mockito-all:${versions.mockito}"
+//    testCompile "org.powermock:powermock-mockito-release-full:${versions.powermock}"
+    testCompile "org.powermock:powermock-api-mockito:${versions.powermock}"
+    testCompile "org.powermock:powermock-module-junit4:${versions.powermock}"
+    testCompile "org.powermock:powermock-module-junit4-rule-agent:${versions.powermock}"
     compile "ch.qos.logback:logback-classic:${versions.logback}"
     compile "ch.qos.logback:logback-core:${versions.logback}"
     compile "org.slf4j:slf4j-api:${versions.slf4j}"
@@ -36,6 +41,12 @@ if (project.apply_sealights_in_subproject) {
 
     sealights {
         appName = "GradleExampleJunitOnly"
+        classLoadersExcluded = "no"
+        logLevel = "debug"
     }
     println "Applied the subproject appName = $sealights.appName"
+}
+
+test {
+   exclude '**/CalculatorUsePowerMock*.class'
 }

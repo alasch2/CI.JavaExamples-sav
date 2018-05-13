@@ -6,7 +6,9 @@ ext {
             sealights:['2.0.0-SNAPSHOT'],
             // For the official latest version (from local Nexus repo)
             //sealights:['latest.release'],
-            junit:['4.11'],
+            junit:['4.12'],
+            mockito:['1.10.19'],
+            powermock:['1.7.1'],
             testng:['6.9.4'],
             logback:['1.2.3'],
             slf4j: ['1.7.25'],

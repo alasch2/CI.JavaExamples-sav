@@ -1,13 +1,31 @@
-The repository contains example projects , which are integrated with the sealights maven and gardle plugins.
+Introduction
+============
+The repository contains example projects , which are integrated with the sealights maven
+ and gardle plugins. 
+ * example-java8 - java8 specific stuff: streams, lambdas etc.
+ * example-junit5 - a combination of JUnit5 and JUnit4 tests.
+ * example-junit-only - JUnit4 tests with using of PowerMock.
+ * example-junit-testng - a combination of JUnit4 and TestNG tests
 
-By default the projects are built without sealights.
+Build types
+=========== 
+Any example project may be built individually. 
+ 
+All examples may be built all together from the root project.
 
-When **build with sealights**, it is possible to build all the projects as a multi-project or individually.
+By default the example projects are built without sealights.
 
-On multi-project build the same application name is used for all the projects. 
-On individual build, each project has its own application name.
+Build with sealights
+--------------------
+Similar to a regular build, the build with sealights may be done for all the examples together
+ or to a single example. 
+ 
+When all the examples are built together the same application name is used for all the projects. 
+ 
+When a single example is built, its own application name is used.
 
-For both plugins all the plugin parameters are defined in the root project and they are inherited by the examples.
+For both plugins all the plugin parameters are defined in the root project and they are inherited by 
+the examples.
 
 Each example redefines the **appName** plugin parameter.
 
